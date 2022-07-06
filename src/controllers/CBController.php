@@ -1099,7 +1099,7 @@ class CBController extends Controller
             }
 
             if (($ro['type'] ?? false) == 'select' || ($ro['type'] ?? false) == 'select2') {
-                if ($ro['datatable']) {
+                if (@$ro['datatable']) {
                     if ($inputdata == '') {
                         $this->arr[$name] = 0;
                     }
@@ -1108,7 +1108,7 @@ class CBController extends Controller
 
             if (@$ro['type'] == 'upload') {
 
-                $this->arr[$name] = CRUDBooster::uploadFile($name, $ro['encrypt'] || $ro['upload_encrypt'], $ro['resize_width'], $ro['resize_height'], CB::myId());
+                @$this->arr[$name] = CRUDBooster::uploadFile($name, $ro['encrypt'] || $ro['upload_encrypt'], $ro['resize_width'], $ro['resize_height'], CB::myId());
 
                 if (! $this->arr[$name]) {
                     $this->arr[$name] = request('_'.$name);
@@ -1246,7 +1246,7 @@ class CBController extends Controller
         $this->return_url = ($this->return_url) ? $this->return_url : request('return_url');
 
         //insert log
-        CRUDBooster::insertLog(cbLang("log_add", ['name' => $this->arr[$this->title_field], 'module' => CRUDBooster::getCurrentModule()->name]));
+        CRUDBooster::insertLog(cbLang("log_add", (['name' => $this->arr[$this->title_field] ?? ''), 'module' => CRUDBooster::getCurrentModule()->name]));
 
         if ($this->return_url) {
             if (request('submit') == cbLang('button_save_more')) {
