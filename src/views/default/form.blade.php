@@ -33,7 +33,7 @@
                     @endif
                     <div class="box-body" id="parent-form-area">
 
-                        @if((($command ?? false) == 'detail')
+                        @if(($command ?? false) == 'detail')
                             @include("crudbooster::default.form_detail")
                         @else
                             @include("crudbooster::default.form_body")
