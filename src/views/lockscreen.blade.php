@@ -39,7 +39,7 @@
 <div class="lockscreen-wrapper">
     <div class="lockscreen-logo">
         <a href="{{url('/')}}">
-            <img title='{!!($appname == 'CRUDBooster')?"<b>CRUD</b>Booster":$appname!!}'
+            <img title='{!!(($appname ?? false) == 'CRUDBooster')?"<b>CRUD</b>Booster":($appname ?? false)!!}'
                  src='{{ CRUDBooster::getSetting("logo")?asset(CRUDBooster::getSetting('logo')):asset('vendor/crudbooster/assets/logo_crudbooster.png') }}'
                  style='max-width: 100%;max-height:170px'/>
         </a>

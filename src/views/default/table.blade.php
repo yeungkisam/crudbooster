@@ -311,7 +311,7 @@ $total = $result->total();
                     <form method='get' action=''>
                         <div class="modal-body">
                             <?php foreach($columns as $key => $col):?>
-                            <?php if (isset($col['image']) || isset($col['download']) || ($col['visible'] ?? false) === FALSE) continue;?>
+                            <?php if (isset($col['image']) || isset($col['download']) || ($col['visible'] ?? 0) === FALSE) continue;?>
 
                             <div class='form-group'>
 
