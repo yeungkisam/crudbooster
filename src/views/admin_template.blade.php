@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{{ ($page_title)?get_setting('appname').': '.strip_tags($page_title):"Admin Area" }}</title>
+    <title>{{ ($page_title ?? false)?get_setting('appname').': '.strip_tags($page_title ?? false):"Admin Area" }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <meta name='generator' content='CRUDBooster {{ \crocodicstudio\crudbooster\commands\CrudboosterVersionCommand::$version }}'/>
     <meta name='robots' content='noindex,nofollow'/>
@@ -29,11 +29,11 @@
 
     <!-- load css -->
     <style type="text/css">
-        @if($style_css)
+        @if($style_css ?? false)
             {!! $style_css !!}
         @endif
     </style>
-    @if($load_css)
+    @if($load_css ?? false)
         @foreach($load_css as $css)
             <link href="{{$css}}" rel="stylesheet" type="text/css"/>
         @endforeach
@@ -86,7 +86,7 @@
 
     @stack('head')
 </head>
-<body class="@php echo (Session::get('theme_color'))?:'skin-blue'; echo ' '; echo config('crudbooster.ADMIN_LAYOUT'); @endphp {{($sidebar_mode)?:''}}">
+<body class="@php echo (Session::get('theme_color'))?:'skin-blue'; echo ' '; echo config('crudbooster.ADMIN_LAYOUT'); @endphp {{($sidebar_mode ?? false)?:''}}">
 <div id='app' class="wrapper">
 
     <!-- Header -->
@@ -105,7 +105,7 @@
             @if($module)
                 <h1>
                     <!--Now you can define $page_icon alongside $page_tite for custom forms to follow CRUDBooster theme style -->
-                    <i class='{!! ($page_icon)?:$module->icon !!}'></i> {!! ucwords(($page_title)?:$module->name) !!} &nbsp;&nbsp;
+                    <i class='{!! ($page_icon ?? false)?:$module->icon !!}'></i> {!! ucwords(($page_title ?? false)?:$module->name) !!} &nbsp;&nbsp;
 
                     <!--START BUTTON -->
 
@@ -127,14 +127,14 @@
 
 
                     @if($button_export && CRUDBooster::getCurrentMethod() == 'getIndex')
-                        <a href="javascript:void(0)" id='btn_export_data' data-url-parameter='{{$build_query}}' title='Export Data'
+                        <a href="javascript:void(0)" id='btn_export_data' data-url-parameter='{{$build_query ?? false}}' title='Export Data'
                            class="btn btn-sm btn-primary btn-export-data">
                             <i class="fa fa-upload"></i> {{cbLang("button_export")}}
                         </a>
                     @endif
 
                     @if($button_import && CRUDBooster::getCurrentMethod() == 'getIndex')
-                        <a href="{{ CRUDBooster::mainpath('import-data') }}" id='btn_import_data' data-url-parameter='{{$build_query}}' title='Import Data'
+                        <a href="{{ CRUDBooster::mainpath('import-data') }}" id='btn_import_data' data-url-parameter='{{$build_query ?? false}}' title='Import Data'
                            class="btn btn-sm btn-primary btn-import-data">
                             <i class="fa fa-download"></i> {{cbLang("button_import")}}
                         </a>
@@ -207,14 +207,14 @@
 @include('crudbooster::admin_template_plugins')
 
 <!-- load js -->
-@if($load_js)
+@if($load_js ?? false)
     @foreach($load_js as $js)
         <script src="{{$js}}"></script>
     @endforeach
 @endif
 <script type="text/javascript">
     var site_url = "{{url('/')}}";
-    @if($script_js)
+    @if($script_js ?? false)
         {!! $script_js !!}
     @endif
 </script>

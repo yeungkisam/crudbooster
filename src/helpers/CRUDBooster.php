@@ -1044,7 +1044,7 @@ class CRUDBooster
         $params = Request::all();
         $mainpath = trim(self::mainpath(), '/');
 
-        if ($params['filter_column'] && $singleSorting) {
+        if (($params['filter_column'] ?? false) && $singleSorting) {
             foreach ($params['filter_column'] as $k => $filter) {
                 foreach ($filter as $t => $val) {
                     if ($t == 'sorting') {
@@ -1126,8 +1126,8 @@ class CRUDBooster
             $string_parameters_array = explode('&', $string_parameters);
             foreach ($string_parameters_array as $s) {
                 $part = explode('=', $s);
-                $name = urldecode($part[0]);
-                $value = urldecode($part[1]);
+                $name = urldecode($part[0] ?? false);
+                $value = urldecode($part[1] ?? false);
                 if ($name) {
                     $inputhtml .= "<input type='hidden' name='$name' value='$value'/>\n";
                 }

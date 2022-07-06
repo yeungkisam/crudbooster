@@ -1,7 +1,6 @@
 @extends('crudbooster::admin_template')
 
 @section('content')
-
     @if($index_statistic)
         <div id='box-statistic' class='row'>
             @foreach($index_statistic as $stat)
@@ -30,7 +29,7 @@
                 &nbsp; {{cbLang('form_back_to_list',['module'=>urldecode(g('label'))])}}</a></p>
     @endif
 
-    @if($parent_table)
+    @if($parent_table ?? false)
         <div class="box box-default">
             <div class="box-body table-responsive no-padding">
                 <table class='table table-bordered'>
@@ -47,7 +46,7 @@
                                         {{  ucwords(str_replace('_',' ',$c)) }}
                                     @endif
                                 </strong></td>
-                            <td> {{ $parent_table->$c }}</td>
+                            <td> {{ optional($parent_table)->$c }}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -84,7 +83,7 @@
             <div class="box-tools pull-{{ cbLang('right') }}" style="position: relative;margin-top: -5px;margin-right: -10px">
 
                 @if($button_filter)
-                    <a style="margin-top:-23px" href="javascript:void(0)" id='btn_advanced_filter' data-url-parameter='{{$build_query}}'
+                    <a style="margin-top:-23px" href="javascript:void(0)" id='btn_advanced_filter' data-url-parameter='{{$build_query ?? false}}'
                        title='{{cbLang('filter_dialog_title')}}' class="btn btn-sm btn-default {{(Request::get('filter_column'))?'active':''}}">
                         <i class="fa fa-filter"></i> {{cbLang("button_filter")}}
                     </a>

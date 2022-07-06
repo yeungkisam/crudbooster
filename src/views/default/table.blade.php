@@ -24,8 +24,7 @@
 
                 swal({
                         title: "{{cbLang("confirmation_title")}}",
-                        text: "{{cbLang("alert_bulk_action_button")}} " + title + " 
-			",
+                        text: "{{cbLang("alert_bulk_action_button")}} " + title + " ",
                         type: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#008D4C",
@@ -49,7 +48,7 @@
 <form id='form-table' method='post' action='{{CRUDBooster::mainpath("action-selected")}}'>
     <input type='hidden' name='button_name' value=''/>
     <input type='hidden' name='_token' value='{{csrf_token()}}'/>
-    <table id='table_dashboard' class="table table-hover table-striped table-bordered">
+    <table id='table_dashboard' class="table table-hover table-striped">
         <thead>
         <tr class="active">
             <?php if($button_bulk_action):?>
@@ -60,7 +59,7 @@
             <?php endif;?>
             <?php
             foreach ($columns as $col) {
-                if ($col['visible'] === FALSE) continue;
+                if (($col['visible'] ?? 0) === FALSE) continue;
 
                 $sort_column = Request::get('filter_column');
                 $colname = $col['label'];
@@ -68,7 +67,7 @@
                 $field = $col['field_with'];
                 $width = (isset($col['width'])) ?$col['width']: "auto";
 		$style = (isset($col['style'])) ?$col['style']: "";
-                $mainpath = trim(CRUDBooster::mainpath(), '/').$build_query;
+                $mainpath = trim(CRUDBooster::mainpath(), '/').($build_query ?? false);
                 echo "<th width='$width' $style>";
                 if (isset($sort_column[$field])) {
                     switch ($sort_column[$field]['sorting']) {
@@ -141,7 +140,7 @@
                     @endif
 
                     @foreach($hc as $j=>$h)
-                        <td {{ $columns[$j]['style'] or ''}}>{!! $h !!}</td>
+                        <td {{ ($columns[$j]['style'] ?? false) or ''}}>{!! $h !!}</td>
                     @endforeach
                 </tr>
                 @endforeach
@@ -160,8 +159,8 @@
 
             <?php
             foreach ($columns as $col) {
-                if ($col['visible'] === FALSE) continue;
-                $colname = $col['label'];
+                if (($col['visible'] ?? 0) === FALSE) continue;
+                $colname = $col['label'] ?? false;
                 $width = (isset($col['width'])) ?$col['width']: "auto";
 		$style = (isset($col['style'])) ? $col['style']: "";
                 echo "<th width='$width' $style>$colname</th>";
@@ -312,7 +311,7 @@ $total = $result->total();
                     <form method='get' action=''>
                         <div class="modal-body">
                             <?php foreach($columns as $key => $col):?>
-                            <?php if (isset($col['image']) || isset($col['download']) || $col['visible'] === FALSE) continue;?>
+                            <?php if (isset($col['image']) || isset($col['download']) || ($col['visible'] ?? false) === FALSE) continue;?>
 
                             <div class='form-group'>
 
@@ -470,7 +469,7 @@ $total = $result->total();
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>{{cbLang("export_dialog_filename")}}</label>
-                                <input type='text' name='filename' class='form-control' required value='Report {{ $module_name }} - {{date("d M Y")}}'/>
+                                <input type='text' name='filename' class='form-control' required value='Report {{ ($module_name ?? false) }} - {{date("d M Y")}}'/>
                                 <div class='help-block'>
                                     {{cbLang("export_dialog_help_filename")}}
                                 </div>
@@ -508,17 +507,17 @@ $total = $result->total();
                                 <div class="form-group">
                                     <label>{{cbLang("export_dialog_page_size")}}</label>
                                     <select class='form-control' name='page_size'>
-                                        <option <?=($setting->default_paper_size == 'Letter') ? "selected" : ""?> value='Letter'>Letter</option>
-                                        <option <?=($setting->default_paper_size == 'Legal') ? "selected" : ""?> value='Legal'>Legal</option>
-                                        <option <?=($setting->default_paper_size == 'Ledger') ? "selected" : ""?> value='Ledger'>Ledger</option>
+                                        <option <?=(optional($setting ?? false)->default_paper_size == 'Letter') ? "selected" : ""?> value='Letter'>Letter</option>
+                                        <option <?=(optional($setting ?? false)->default_paper_size == 'Legal') ? "selected" : ""?> value='Legal'>Legal</option>
+                                        <option <?=(optional($setting ?? false)->default_paper_size == 'Ledger') ? "selected" : ""?> value='Ledger'>Ledger</option>
                                         <?php for($i = 0;$i <= 8;$i++):
-                                        $select = ($setting->default_paper_size == 'A'.$i) ? "selected" : "";
+                                        $select = (optional($setting ?? false)->default_paper_size == 'A'.$i) ? "selected" : "";
                                         ?>
                                         <option <?=$select?> value='A{{$i}}'>A{{$i}}</option>
                                         <?php endfor;?>
 
                                         <?php for($i = 0;$i <= 10;$i++):
-                                        $select = ($setting->default_paper_size == 'B'.$i) ? "selected" : "";
+                                        $select = (optional($setting ?? false)->default_paper_size == 'B'.$i) ? "selected" : "";
                                         ?>
                                         <option <?=$select?> value='B{{$i}}'>B{{$i}}</option>
                                         <?php endfor;?>

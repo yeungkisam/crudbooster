@@ -40,10 +40,10 @@ class MenusController extends CBController
 
         $id_module = $id_statistic = 0;
 
-        if ($row->type == 'Module') {
+        if (optional($row)->type == 'Module') {
             $m = CRUDBooster::first('cms_moduls', ['path' => $row->path]);
             $id_module = $m->id;
-        } elseif ($row->type == 'Statistic') {
+        } elseif (optional($row)->type == 'Statistic') {
             $row->path = str_replace('statistic_builder/show/', '', $row->path);
             $m = CRUDBooster::first('cms_statistics', ['slug' => $row->path]);
             $id_statistic = $m->id;
@@ -52,7 +52,7 @@ class MenusController extends CBController
         $this->script_js = "
 			$(function() {
 				var current_id = '$id';
-				var current_type = '$row->type';
+				var current_type = 'optional($row)->type';
 				var type_menu = $('input[name=type]').val();
 				type_menu = (current_type)?current_type:type_menu;
 				if(type_menu == 'Module') {

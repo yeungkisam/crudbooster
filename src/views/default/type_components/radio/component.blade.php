@@ -6,7 +6,7 @@
     </label>
     <div class="{{$col_width?:'col-sm-10'}}">
 
-        @if(!$form['dataenum'] && !$form['datatable'] && !$form['dataquery'])
+        @if(!$form['dataenum'] && !$form['datatable'] && !($form['dataquery'] ?? false))
             <em>{{cbLang('there_is_no_option')}}</em>
         @endif
 
@@ -84,8 +84,8 @@
             }
 
         endif;
-        if ($form['dataquery']) {
-            $query = DB::select(DB::raw($form['dataquery']));
+        if ($form['dataquery'] ?? false) {
+            $query = DB::select(DB::raw($form['dataquery'] ?? false));
             if ($query) {
                 foreach ($query as $q) {
                     $checked = ($value == $q->value) ? "checked" : "";

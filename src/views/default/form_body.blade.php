@@ -61,7 +61,7 @@ if ($join && @$row) {
     $join_query_[$join_table] = DB::table($join_table)->select($join_title)->where("id", $row->{'id_'.$join_table})->first();
     $value = @$join_query_[$join_table]->{$join_title};
 }
-$form['type'] = ($form['type']) ?: 'text';
+$form['type'] = @($form['type']) ?: 'text';
 $type = @$form['type'];
 $required = (@$form['required']) ? "required" : "";
 $required = (@strpos($form['validation'], 'required') !== FALSE) ? "required" : $required;

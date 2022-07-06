@@ -1,6 +1,6 @@
 <?php
 
-if ($form['datatable'] && $form['relationship_table']) {
+if (($form['datatable'] ?? false) && ($form['relationship_table'] ?? false)) {
     $datatable_array = explode(",", $form['datatable']);
     $datatable_tab = $datatable_array[0];
     $datatable_field = $datatable_array[1];
@@ -9,7 +9,7 @@ if ($form['datatable'] && $form['relationship_table']) {
 
     $ids = DB::table($form['relationship_table'])->where($form['relationship_table'].'.'.$foreignKey, $id)->pluck($foreignKey2)->toArray();
     $value = DB::table($datatable_tab)->select($datatable_field)->whereIn('id', $ids)->pluck($datatable_field)->toArray();
-} elseif ($form['datatable']) {
+} elseif ($form['datatable'] ?? false) {
 
     $datatable = explode(',', $form['datatable']);
     $table = $datatable[0];
@@ -20,7 +20,7 @@ if ($form['datatable'] && $form['relationship_table']) {
     } else {
         $value = [];
     }
-} elseif ($form['dataquery']) {
+} elseif ($form['dataquery'] ?? false) {
     $dataquery = $form['dataquery'];
     $query = DB::select(DB::raw($dataquery));
     if ($query) {

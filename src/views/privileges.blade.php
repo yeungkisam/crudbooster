@@ -154,13 +154,13 @@
                             <?php $no = 1;?>
                             @foreach($moduls as $modul)
                                 <?php
-                                $roles = DB::table('cms_privileges_roles')->where('id_cms_moduls', $modul->id)->where('id_cms_privileges', $row->id)->first();
+                                $roles = @DB::table('cms_privileges_roles')->where('id_cms_moduls', $modul->id)->where('id_cms_privileges', $row->id)->first();
                                 ?>
                                 <tr>
                                     <td><?php echo $no++;?></td>
                                     <td>{{$modul->name}}</td>
                                     <td class='info' align="center"><input type='checkbox' title='Check All Horizontal'
-                                                                           <?=($roles->is_create && $roles->is_read && $roles->is_edit && $roles->is_delete) ? "checked" : ""?> class='select_horizontal'/>
+                                                                           <?=@($roles->is_create && $roles->is_read && $roles->is_edit && $roles->is_delete) ? "checked" : ""?> class='select_horizontal'/>
                                     </td>
                                     <td class='active' align="center"><input type='checkbox' class='is_visible' name='privileges[<?=$modul->id?>][is_visible]'
                                                                              <?=@$roles->is_visible ? "checked" : ""?> value='1'/></td>

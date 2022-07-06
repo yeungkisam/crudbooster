@@ -1,5 +1,5 @@
 <?php $default = ! empty($form['default']) ? $form['default'] : cbLang('text_prefix_option')." ".$form['label'];?>
-@if($form['parent_select'])
+@if($form['parent_select'] ?? false)
     <?php
     $parent_select = (count(explode(",", $form['parent_select'])) > 1) ? explode(",", $form['parent_select']) : $form['parent_select'];
     $parent = is_array($parent_select) ? $parent_select[0] : $parent_select;
@@ -17,7 +17,7 @@
                             @if(!empty($add_field))
                     var add_field = ($("#{{$add_field}}").val()) ? $("#{{$add_field}}").val() : "";
                             @endif
-                    var datatableWhere = "{{$form['datatable_where']}}";
+                    var datatableWhere = "{{@$form['datatable_where']}}";
                     @if(!empty($add_field))
                     if (datatableWhere) {
                         if (add_field) {
@@ -69,7 +69,7 @@
         <select class='form-control' id="{{$name}}" data-value='{{$value}}' {{$required}} {!!$placeholder!!} {{$readonly}} {{$disabled}} name="{{$name}}">
             <option value=''>{{$default}}</option>
             <?php
-            if (! $form['parent_select']) {
+            if (! ($form['parent_select'] ?? false)) {
                 if (@$form['dataquery']):
 
                     $query = DB::select(DB::raw($form['dataquery']));
@@ -105,8 +105,8 @@
 
                 if (@$form['datatable']):
                     $raw = explode(",", $form['datatable']);
-                    $format = $form['datatable_format'];
-                    $datatable_order = explode(',', $form['datatable_order']);
+                    $format = $form['datatable_format'] ?? false;
+                    $datatable_order = explode(',', ($form['datatable_order'] ?? false));
                     $table1 = $raw[0];
                     $column1 = $raw[1];
 

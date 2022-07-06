@@ -55,12 +55,12 @@
                     } else {
 
                         //limit character
-                        if ($col['str_limit']) {
+                        if ($col['str_limit'] ?? false) {
                             $value = trim(strip_tags($value));
                             $value = str_limit($value, $col['str_limit']);
                         }
 
-                        if ($col['nl2br']) {
+                        if ($col['nl2br'] ?? false) {
                             $value = nl2br($value);
                         }
 

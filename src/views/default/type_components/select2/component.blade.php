@@ -1,6 +1,6 @@
-@if($form['datatable'])
+@if(@$form['datatable'])
 
-    @if($form['relationship_table'])
+    @if($form['relationship_table'] ?? false)
         @push('bottom')
             <script type="text/javascript">
                 $(function () {
@@ -9,7 +9,7 @@
             </script>
         @endpush
     @else
-        @if($form['datatable_ajax'] == true)
+        @if(($form['datatable_ajax'] ?? false) == true)
 
             <?php
             $datatable = @$form['datatable'];
@@ -126,8 +126,8 @@
 
     <div class="{{$col_width?:'col-sm-10'}}">
         <select style='width:100%' class='form-control' id="{{$name}}"
-                {{$required}} {{$readonly}} {!!$placeholder!!} {{$disabled}} name="{{$name}}{{($form['relationship_table'])?'[]':''}}" {{ ($form['relationship_table'])?'multiple="multiple"':'' }} >
-            @if($form['dataenum'])
+                {{$required}} {{$readonly}} {!!$placeholder!!} {{$disabled}} name="{{$name}}{{($form['relationship_table'] ?? false )?'[]':''}}" {{ ($form['relationship_table'] ?? false)?'multiple="multiple"':'' }} >
+            @if($form['dataenum'] ?? false)
                 <option value=''>{{cbLang('text_prefix_option')}} {{$form['label']}}</option>
                 <?php
                 $dataenum = $form['dataenum'];
@@ -150,12 +150,12 @@
                 @endforeach
             @endif
 
-            @if($form['datatable'])
-                @if($form['relationship_table'])
+            @if(@$form['datatable'])
+                @if($form['relationship_table'] ?? false)
                     <?php
                     $select_table = explode(',', $form['datatable'])[0];
                     $select_title = explode(',', $form['datatable'])[1];
-                    $select_where = $form['datatable_where'];
+                    $select_where = @$form['datatable_where'];
                     $pk = CRUDBooster::findPrimaryKey($select_table);
 
                     $result = DB::table($select_table)->select($pk, $select_title);
@@ -164,7 +164,7 @@
                     }
                     $result = $result->orderby($select_title, 'asc')->get();
 
-                    if($form['datatable_orig'] != ''){
+                    if(($form['datatable_orig'] ?? false) != ''){
                         $params = explode("|", $form['datatable_orig']);
                         if(!isset($params[2])) $params[2] = "id";
                         $value = DB::table($params[0])->where($params[2], $id)->first()->{$params[1]};
@@ -172,7 +172,7 @@
                     } else {
                         $foreignKey = CRUDBooster::getForeignKey($table, $form['relationship_table']);
                         $foreignKey2 = CRUDBooster::getForeignKey($select_table, $form['relationship_table']);
-                        $value = DB::table($form['relationship_table'])->where($foreignKey, $id);
+                        $value = @DB::table($form['relationship_table'])->where($foreignKey, $id);
                         $value = $value->pluck($foreignKey2)->toArray();
                     }
                     
@@ -184,13 +184,13 @@
                     }
                     ?>
                 @else
-                    @if($form['datatable_ajax'] == false)
+                    @if(($form['datatable_ajax'] ?? false) == false)
                         <option value=''>{{cbLang('text_prefix_option')}} {{$form['label']}}</option>
                         <?php
                         $select_table = explode(',', $form['datatable'])[0];
                         $select_title = explode(',', $form['datatable'])[1];
-                        $select_where = $form['datatable_where'];
-                        $datatable_format = $form['datatable_format'];
+                        $select_where = @$form['datatable_where'];
+                        $datatable_format = @$form['datatable_format'];
                         $select_table_pk = CRUDBooster::findPrimaryKey($select_table);
                         $result = DB::table($select_table)->select($select_table_pk, $select_title);
                         if ($datatable_format) {
