@@ -1246,7 +1246,7 @@ class CBController extends Controller
         $this->return_url = ($this->return_url) ? $this->return_url : request('return_url');
 
         //insert log
-        CRUDBooster::insertLog(cbLang("log_add", (['name' => $this->arr[$this->title_field] ?? ''), 'module' => CRUDBooster::getCurrentModule()->name));
+        CRUDBooster::insertLog(cbLang("log_add", ['name' => ($this->arr[$this->title_field] ?? ''), 'module' => CRUDBooster::getCurrentModule()->name]));
 
         if ($this->return_url) {
             if (request('submit') == cbLang('button_save_more')) {
