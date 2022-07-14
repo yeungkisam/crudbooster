@@ -1,6 +1,12 @@
 @if(Request::input('fileformat') == 'pdf')
     <h3>{{Request::input('filename')}}</h3>
 @endif
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+<style>
+    body { font-family: 'mjhr'; }
+ </style>
+
 <table border='1' width='100%' cellpadding='3' cellspacing="0" style='border-collapse: collapse;font-size:12px'>
     <thead>
     <tr>

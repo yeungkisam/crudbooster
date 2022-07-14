@@ -6,6 +6,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 use CB;
 use crocodicstudio\crudbooster\export\DefaultExportXls;
 use Illuminate\Support\Str;
+use Dompdf\Dompdf;
 use CRUDBooster;
 use App\Imports\GenericImport;
 use Illuminate\Support\Facades\App;
@@ -636,8 +637,6 @@ class CBController extends Controller
 
         $data['html_contents'] = $html_contents;
 
-        // dd($data);
-
         return view("crudbooster::default.index", $data);
     }
 
@@ -668,11 +667,20 @@ class CBController extends Controller
         switch ($filetype) {
             case "pdf":
                 $view = view('crudbooster::export', $response)->render();
-                $pdf = App::make('dompdf.wrapper');
-                $pdf->loadHTML($view);
-                $pdf->setPaper($papersize, $paperorientation);
 
-                return $pdf->stream($filename.'.pdf');
+                $dompdf = new Dompdf([
+                    'isRemoteEnabled' => true,
+                    'enable_font_subsetting' => true,
+                    'default_font' => 'mjhr'
+                ]);
+                $dompdf->loadHTML($view);
+                $dompdf->render();
+                $dompdf->setPaper($papersize, $paperorientation);
+                // $pdf = App::make('dompdf.wrapper');
+                // $pdf->loadHTML($view);
+                // $pdf->setPaper($papersize, $paperorientation);
+
+                return $dompdf->stream($filename.'.pdf');
                 break;
             case 'xls':
 
