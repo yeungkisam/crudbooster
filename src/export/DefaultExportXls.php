@@ -7,7 +7,7 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 
-class DefaultExportXls implements FromView
+class DefaultExportXls implements FromView, WithCustomCsvSettings
 {
     private $data;
 
