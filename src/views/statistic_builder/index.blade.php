@@ -4,24 +4,24 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
 
-    <script type="text/javascript">
-        $(function () {
+    <script nonce="{{ config('view.script_nonce', '') }}" type="text/javascript">
+        $(function() {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $(document).ajaxStart(function () {
+            $(document).ajaxStart(function() {
                 $('.btn-save-statistic').html("<i class='fa fa-spin fa-spinner'></i>");
             })
-            $(document).ajaxStop(function () {
+            $(document).ajaxStop(function() {
                 $('.btn-save-statistic').html("<i class='fa fa-save'></i> Auto Save Ready");
             })
 
-            $('.btn-show-sidebar').click(function (e) {
+            $('.btn-show-sidebar').click(function(e) {
                 e.stopPropagation();
             })
-            $('html,body').click(function () {
+            $('html,body').click(function() {
                 $('.control-sidebar').removeClass('control-sidebar-open');
             })
         })
@@ -63,30 +63,31 @@
 
 @push('bottom')
     <!-- ADDITION FUNCTION FOR BUTTON -->
-    <script type="text/javascript">
-        var id_cms_statistics = '{{$id_cms_statistics}}';
+    <script nonce="{{ config('view.script_nonce', '') }}" type="text/javascript">
+        var id_cms_statistics = '{{ $id_cms_statistics }}';
 
         function addWidget(id_cms_statistics, area, component) {
             var id = new Date().getTime();
             $('#' + area).append("<div id='" + id + "' class='area-loading'><i class='fa fa-spin fa-spinner'></i></div>");
 
             var sorting = $('#' + area + ' .border-box').length;
-            $.post("{{CRUDBooster::mainpath('add-component')}}", {
+            $.post("{{ CRUDBooster::mainpath('add-component') }}", {
                 component_name: component,
                 id_cms_statistics: id_cms_statistics,
                 sorting: sorting,
                 area: area
-            }, function (response) {
+            }, function(response) {
                 $('#' + area).append(response.layout);
                 $('#' + id).remove();
             })
         }
-
     </script>
     <!--DATATABLE-->
-    <link rel="stylesheet" href="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/dataTables.bootstrap.css')}}">
-    <script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
+    <link rel="stylesheet"
+        href="{{ asset('vendor/crudbooster/assets/adminlte/plugins/datatables/dataTables.bootstrap.css') }}">
+    <script src="{{ asset('vendor/crudbooster/assets/adminlte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/crudbooster/assets/adminlte/plugins/datatables/dataTables.bootstrap.min.js') }}">
+    </script>
     <!--END HERE-->
 @endpush
 
@@ -103,7 +104,7 @@
             min-height: 150px;
         }
 
-        .layout-grid + .layout-grid {
+        .layout-grid+.layout-grid {
             border-left: 1px dashed transparent;
         }
 
@@ -141,17 +142,20 @@
             /*border:2px dotted #BC3F30;*/
         }
 
-        @if(CRUDBooster::getCurrentMethod() == 'getBuilder')
-        .border-box:hover .action {
-            display: block;
-        }
+        @if (CRUDBooster::getCurrentMethod() == 'getBuilder')
+            .border-box:hover .action {
+                display: block;
+            }
 
-        .panel-heading, .inner-box, .box-header, .btn-add-widget {
-            cursor: move;
-        }
+            .panel-heading,
+            .inner-box,
+            .box-header,
+            .btn-add-widget {
+                cursor: move;
+            }
 
         @endif
-        
+
         .connectedSortable {
             position: relative;
         }
@@ -179,14 +183,13 @@
 
 @push('bottom')
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
+    <script nonce="{{ config('view.script_nonce', '') }}" type="text/javascript">
+        $(function() {
 
             var cloneSidebar = $('.control-sidebar').clone();
 
-            @if(CRUDBooster::getCurrentMethod() == 'getBuilder')
-            createSortable();
-
+            @if (CRUDBooster::getCurrentMethod() == 'getBuilder')
+                createSortable();
             @endif
 
             function createSortable() {
@@ -196,7 +199,7 @@
                     handle: ".panel-heading, .inner-box, .box-header, .btn-add-widget",
                     forcePlaceholderSize: true,
                     zIndex: 999999,
-                    stop: function (event, ui) {
+                    stop: function(event, ui) {
                         console.log(ui.item.attr('class'));
                         var className = ui.item.attr('class');
                         var idName = ui.item.attr('id');
@@ -212,18 +215,18 @@
                             createSortable();
                         }
                     },
-                    update: function (event, ui) {
+                    update: function(event, ui) {
                         if (ui.sender) {
                             var componentID = ui.item.attr('id');
                             var areaname = $('#' + componentID).parent('.connectedSortable').attr("id");
                             var index = $('#' + componentID).index();
 
 
-                            $.post("{{CRUDBooster::mainpath('update-area-component')}}", {
+                            $.post("{{ CRUDBooster::mainpath('update-area-component') }}", {
                                 componentid: componentID,
                                 sorting: index,
                                 areaname: areaname
-                            }, function (response) {
+                            }, function(response) {
 
                             })
                         }
@@ -232,33 +235,39 @@
             }
 
         })
-
     </script>
 
-    <script type="text/javascript">
-        $(function () {
+    <script nonce="{{ config('view.script_nonce', '') }}" type="text/javascript">
+        $(function() {
 
-            $('.connectedSortable').each(function () {
+            $('.connectedSortable').each(function() {
                 var areaname = $(this).attr('id');
 
-                $.get("{{CRUDBooster::adminpath('statistic_builder/list-component')}}/" + id_cms_statistics + "/" + areaname, function (response) {
-                    if (response.components) {
+                $.get("{{ CRUDBooster::adminpath('statistic_builder/list-component') }}/" +
+                    id_cms_statistics + "/" + areaname,
+                    function(response) {
+                        if (response.components) {
 
-                        $.each(response.components, function (i, obj) {
-                            $('#' + areaname).append("<div id='area-loading-" + obj.componentID + "' class='area-loading'><i class='fa fa-spin fa-spinner'></i></div>");
-                            $.get("{{CRUDBooster::adminpath('statistic_builder/view-component')}}/" + obj.componentID, function (view) {
-                                console.log('View For CID ' + view.componentID);
-                                $('#area-loading-' + obj.componentID).remove();
-                                $('#' + areaname).append(view.layout);
+                            $.each(response.components, function(i, obj) {
+                                $('#' + areaname).append("<div id='area-loading-" + obj
+                                    .componentID +
+                                    "' class='area-loading'><i class='fa fa-spin fa-spinner'></i></div>"
+                                    );
+                                $.get("{{ CRUDBooster::adminpath('statistic_builder/view-component') }}/" +
+                                    obj.componentID,
+                                    function(view) {
+                                        console.log('View For CID ' + view.componentID);
+                                        $('#area-loading-' + obj.componentID).remove();
+                                        $('#' + areaname).append(view.layout);
 
+                                    })
                             })
-                        })
-                    }
-                })
+                        }
+                    })
             })
 
 
-            $(document).on('click', '.btn-delete-component', function () {
+            $(document).on('click', '.btn-delete-component', function() {
                 var componentID = $(this).data('componentid');
                 var $this = $(this);
 
@@ -271,47 +280,52 @@
                         confirmButtonText: "Yes",
                         closeOnConfirm: true
                     },
-                    function () {
+                    function() {
 
-                        $.get("{{CRUDBooster::mainpath('delete-component')}}/" + componentID, function () {
-                            $this.parents('.border-box').remove();
+                        $.get("{{ CRUDBooster::mainpath('delete-component') }}/" + componentID,
+                            function() {
+                                $this.parents('.border-box').remove();
 
-                        });
+                            });
                     });
 
             })
-            $(document).on('click', '.btn-edit-component', function () {
+            $(document).on('click', '.btn-edit-component', function() {
                 var componentID = $(this).data('componentid');
                 var name = $(this).data('name');
 
                 $('#modal-statistic .modal-title').text(name);
-                $('#modal-statistic .modal-body').html("<i class='fa fa-spin fa-spinner'></i> Please wait loading...");
+                $('#modal-statistic .modal-body').html(
+                    "<i class='fa fa-spin fa-spinner'></i> Please wait loading...");
                 $('#modal-statistic').modal('show');
 
-                $.get("{{CRUDBooster::mainpath('edit-component')}}/" + componentID, function (response) {
+                $.get("{{ CRUDBooster::mainpath('edit-component') }}/" + componentID, function(response) {
                     $('#modal-statistic .modal-body').html(response);
                 })
             })
 
-            $('#modal-statistic .btn-submit').click(function () {
+            $('#modal-statistic .btn-submit').click(function() {
 
                 $('#modal-statistic form .has-error').removeClass('has-error');
 
                 var required_input = [];
-                $('#modal-statistic form').find('input[required],textarea[required],select[required]').each(function () {
-                    var $input = $(this);
-                    var $form_group = $input.parent('.form-group');
-                    var value = $input.val();
+                $('#modal-statistic form').find('input[required],textarea[required],select[required]').each(
+                    function() {
+                        var $input = $(this);
+                        var $form_group = $input.parent('.form-group');
+                        var value = $input.val();
 
-                    if (value == '') {
-                        required_input.push($input.attr('name'));
-                    }
-                })
+                        if (value == '') {
+                            required_input.push($input.attr('name'));
+                        }
+                    })
 
                 if (required_input.length) {
-                    setTimeout(function () {
-                        $.each(required_input, function (i, name) {
-                            $('#modal-statistic form').find('input[name="' + name + '"],textarea[name="' + name + '"],select[name="' + name + '"]').parent('.form-group').addClass('has-error');
+                    setTimeout(function() {
+                        $.each(required_input, function(i, name) {
+                            $('#modal-statistic form').find('input[name="' + name +
+                                '"],textarea[name="' + name + '"],select[name="' +
+                                name + '"]').parent('.form-group').addClass('has-error');
                         })
                     }, 200);
 
@@ -323,14 +337,14 @@
                 $.ajax({
                     data: $('#modal-statistic form').serialize(),
                     type: 'POST',
-                    url: "{{CRUDBooster::mainpath('save-component')}}",
-                    success: function () {
+                    url: "{{ CRUDBooster::mainpath('save-component') }}",
+                    success: function() {
 
                         $button.removeClass('disabled').text('Save Changes');
                         $('#modal-statistic').modal('hide');
-                        window.location.href = "{{Request::fullUrl()}}";
+                        window.location.href = "{{ Request::fullUrl() }}";
                     },
-                    error: function () {
+                    error: function() {
                         alert('Sorry something went wrong !');
                         $button.removeClass('disabled').text('Save Changes');
                     }
@@ -344,7 +358,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Modal title</h4>
             </div>
             <div class="modal-body">
@@ -352,7 +367,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn-submit btn btn-primary" data-loading-text="Saving..." autocomplete="off">Save changes</button>
+                <button type="button" class="btn-submit btn btn-primary" data-loading-text="Saving..."
+                    autocomplete="off">Save changes</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

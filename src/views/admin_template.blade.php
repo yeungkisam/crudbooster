@@ -212,7 +212,7 @@
         <script src="{{$js}}"></script>
     @endforeach
 @endif
-<script type="text/javascript">
+<script nonce="{{ config('view.script_nonce', '') }}" type="text/javascript">
     var site_url = "{{url('/')}}";
     @if($script_js ?? false)
         {!! $script_js !!}

@@ -1,11 +1,11 @@
 @push('bottom')
     @if (App::getLocale() != 'en')
-        <script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/daterangepicker/locales.min.js') }}"
-                charset="UTF-8"></script>
+        <script src="{{ asset('vendor/crudbooster/assets/adminlte/plugins/daterangepicker/locales.min.js') }}" charset="UTF-8">
+        </script>
     @endif
 
-    <script type="text/javascript">
-        var lang = '{{App::getLocale()}}';
+    <script nonce="{{ config('view.script_nonce', '') }}" type="text/javascript">
+        var lang = '{{ App::getLocale() }}';
         moment.locale(lang);
         $(function() {
             $('.input_datetime').daterangepicker({
