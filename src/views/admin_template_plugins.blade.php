@@ -6,7 +6,8 @@
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.2.3 -->
-<script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+{{-- <script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script> --}}
+<script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/jQuery/jquery-3.6.3.min.js') }}"></script>
 
 <!-- Bootstrap 3.4.1 JS -->
 <script src="{{ asset ('vendor/crudbooster/assets/adminlte/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
@@ -41,7 +42,7 @@
 <script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
 
-<script>
+<script nonce="{{ $nonce }}">
     var ASSET_URL = "{{asset('/')}}";
     var APP_NAME = "{{Session::get('appname')}}";
     var ADMIN_PATH = '{{url(config("crudbooster.ADMIN_PATH")) }}';

@@ -32,7 +32,7 @@
                 }
             </style>
 
-            <script>
+            <script nonce="{{ config('view.script_nonce', '') }}">
                 $(function () {
                     $(".link_name_api").click(function () {
                         $(".detail_api").slideUp();

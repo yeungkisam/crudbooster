@@ -51,7 +51,7 @@
     echo "<div id='content-$componentID'></div>";
     ?>
 
-    <script>
+    <script nonce="{{ config('view.script_nonce', '') }}">
         $(function () {
             $('#content-{{$componentID}}').html("<i class='fa fa-spin fa-spinner'></i> Please wait loading...");
             $.get('{{$url}}', function (response) {

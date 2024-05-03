@@ -3,7 +3,7 @@
     @push('bottom')
         <script src="{{asset('vendor/laravel-filemanager/js/lfm.js')}}"></script>
         <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-        <script>
+        <script nonce="{{ config('view.script_nonce', '') }}">
             $(function () {
                 $('.label-setting').hover(function () {
                     $(this).find('a').css("visibility", "visible");
@@ -15,7 +15,7 @@
                 path_absolute: "{{asset('/')}}",
                 selector: ".wysiwyg",
                 height: 250,
-                {{ ($disabled)?"readonly:1,":"" }}
+                {{ ($disabled ?? false)?"readonly:1,":"" }}
                 plugins: [
                     "advlist autolink lists link image charmap print preview hr anchor pagebreak",
                     "searchreplace wordcount visualblocks visualchars code fullscreen",

@@ -1,7 +1,7 @@
 <?php
-
 //Loading Assets
 $asset_already = [];
+// dd($forms);
 foreach($forms as $form) {
 $type = @$form['type'] ?: 'text';
 $name = $form['name'];
@@ -10,7 +10,7 @@ if (in_array($type, $asset_already)) continue;
 ?>
 @if(file_exists(base_path('/vendor/samyeung/crudbooster/src/views/default/type_components/'.$type.'/asset.blade.php')))
     @include('crudbooster::default.type_components.'.$type.'.asset')
-@elseif(file_exists(resource_path('views/vendor/samyeung/type_components/'.$type.'/asset.blade.php')))
+@elseif(file_exists(resource_path('views/vendor/crudbooster/type_components/'.$type.'/asset.blade.php')))
     @include('vendor.crudbooster.type_components.'.$type.'.asset')
 @endif
 <?php
@@ -35,7 +35,7 @@ $validation_raw = isset($form['validation']) ? explode('|', $form['validation'])
 if ($validation_raw) {
     foreach ($validation_raw as $vr) {
         $vr_a = explode(':', $vr);
-        if ($vr_a[1]) {
+        if ($vr_a[1] ?? false) {
             $key = $vr_a[0];
             $validation[$key] = $vr_a[1];
         } else {
@@ -50,7 +50,7 @@ if (isset($form['callback_php'])) {
 
 
 if (isset($form['callback'])) {
-    $value = call_user_func($form['callback'], $row);
+    $value = call_user_func($form['callback'], $row ?? null);
 }
 
 if ($join && @$row) {
@@ -58,15 +58,15 @@ if ($join && @$row) {
     array_walk($join_arr, 'trim');
     $join_table = $join_arr[0];
     $join_title = $join_arr[1];
-    $join_query_[$join_table] = DB::table($join_table)->select($join_title)->where("id", $row->{'id_'.$join_table})->first();
-    $value = @$join_query_[$join_table]->{$join_title};
+    $join_query_[$join_table ?? false] = DB::table($join_table)->select($join_title)->where("id", $row->{'id_'.$join_table})->first();
+    $value = @$join_query_{$join_table}->{$join_title};
 }
 $form['type'] = @($form['type']) ?: 'text';
 $type = @$form['type'];
 $required = (@$form['required']) ? "required" : "";
 $required = (@strpos($form['validation'], 'required') !== FALSE) ? "required" : $required;
-$readonly = (@$form['readonly']) ? "readonly" : "";
-$disabled = (@$form['disabled']) ? "disabled" : "";
+$readonly = (@$form['readonly'] || @($command==='clone' && @$form['clone_field'])) ? "readonly" : "";
+$disabled = (@$form['disabled'] || @($command==='clone' && @$form['clone_field'])) ? "disabled" : "";
 $placeholder = (@$form['placeholder']) ? "placeholder='".$form['placeholder']."'" : "";
 $col_width = @$form['width'] ?: "col-sm-9";
 

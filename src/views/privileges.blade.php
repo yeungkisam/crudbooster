@@ -93,7 +93,7 @@
                     <div id='privileges_configuration' class='form-group'>
                         <label>{{cbLang('privileges_configuration')}}</label>
                         @push('bottom')
-                            <script>
+                            <script nonce="{{ config('view.script_nonce', '') }}">
                                 $(function () {
                                     $("#is_visible").click(function () {
                                         var is_ch = $(this).prop('checked');

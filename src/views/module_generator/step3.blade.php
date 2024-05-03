@@ -14,7 +14,7 @@
     @endpush
     @push('bottom')
         <script src='<?php echo asset("vendor/crudbooster/assets/select2/dist/js/select2.full.min.js")?>'></script>
-        <script>
+        <script nonce="{{ config('view.script_nonce', '') }}">
             $(function () {
                 $('.select2').select2();
             })
@@ -461,7 +461,7 @@
                             <td>
                                 <select class='form-control width' name='width[]'>
                                     @for($i=10;$i>=1;$i--)
-                                        <option {{ ($form['width'] == "col-sm-$i")?"selected":"" }} value='col-sm-{{$i}}'>{{$i}}</option>
+                                        <option {{ (($form['width']??false) == "col-sm-$i")?"selected":"" }} value='col-sm-{{$i}}'>{{$i}}</option>
                                     @endfor
                                 </select>
                             </td>
@@ -478,14 +478,14 @@
                                     if($types):
                                     ?>
 
-                                    @if($types->alert)
+                                    @if($types->alert ?? false)
                                         <div class="alert alert-warning">
                                             {!! $types->alert !!}
                                         </div>
                                     @endif
 
                                     <?php
-                                    if($types->attribute->required):
+                                    if($types->attribute->required ?? false):
                                     foreach($types->attribute->required as $key=>$val):
                                     @$value = $form[$key];
                                     if(is_object($val)):
@@ -522,7 +522,7 @@
 
 
                                     <?php
-                                    if($types->attribute->requiredOne):
+                                    if($types->attribute->requiredOne ?? false):
                                     foreach($types->attribute->requiredOne as $key=>$val):
                                     @$value = $form[$key];
                                     ?>
@@ -533,7 +533,7 @@
                                     <?php endforeach; endif;?>
 
                                     <?php
-                                    if($types->attribute->optional):
+                                    if($types->attribute->optional ?? false):
                                     foreach($types->attribute->optional as $key=>$val):
                                     @$value = $form[$key];
 

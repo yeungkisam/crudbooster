@@ -55,7 +55,7 @@
             </table>
 
             @push('bottom')
-                <script>
+                <script nonce="{{ config('view.script_nonce', '') }}">
                     var lastno = <?=$no?>;
 
                     function generate_screet_key() {

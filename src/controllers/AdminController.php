@@ -41,7 +41,7 @@ class AdminController extends CBController
 
             return redirect(CRUDBooster::adminPath());
         } else {
-            echo "<script>alert('".cbLang('alert_password_wrong')."');history.go(-1);</script>";
+            echo "<script nonce=" . config('view.script_nonce') ?? '' . ">alert('" . cbLang('alert_password_wrong') . "');history.go(-1);</script>";
         }
     }
 

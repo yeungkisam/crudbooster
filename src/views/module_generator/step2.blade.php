@@ -14,7 +14,7 @@
     @endpush
     @push('bottom')
         <script src='<?php echo asset("vendor/crudbooster/assets/select2/dist/js/select2.full.min.js")?>'></script>
-        <script>
+        <script nonce="{{ config('view.script_nonce', '') }}">
             $(function () {
                 $('.select2').select2();
             })
@@ -63,7 +63,7 @@
     @endpush
 
     @push('bottom')
-        <script>
+        <script nonce="{{ config('view.script_nonce', '') }}">
             var columns = {!! json_encode($columns) !!};
             var tables = {!! json_encode($table_list) !!};
 
@@ -319,19 +319,19 @@
                                 <td><input value='{{ @explode(",",$c["join"])[1] }}' type='text' name='join_field[]' onclick='showTableField(this)'
                                            onKeyUp='showTableFieldLike(this)' placeholder='Field Name Shown' class='join_field form-control notfocus' value=''/>
                                 </td>
-                                <td><input type='text' name='callbackphp[]' class='form-control callbackphp notfocus' value='{{$c["callback_php"]}}'
+                                <td><input type='text' name='callbackphp[]' class='form-control callbackphp notfocus' value='{{$c["callback_php"] ?? ''}}'
                                            placeholder="Optional"/></td>
-                                <td><input value='{{$c["width"]?:0}}' type='number' name='width[]' class='form-control'/></td>
+                                <td><input value='{{$c["width"]??0}}' type='number' name='width[]' class='form-control'/></td>
                                 <td>
                                     <select class='form-control is_image' name='is_image[]'>
-                                        <option {{ (!$c['image'])?"selected":""}} value='0'>N</option>
-                                        <option {{ ($c['image'])?"selected":""}} value='1'>Y</option>
+                                        <option {{ (!($c['image'] ?? false))?"selected":""}} value='0'>N</option>
+                                        <option {{ (($c['image'] ?? false))?"selected":""}} value='1'>Y</option>
                                     </select>
                                 </td>
                                 <td>
                                     <select class='form-control is_download' name='is_download[]'>
-                                        <option {{ (!$c['download'])?"selected":""}} value='0'>N</option>
-                                        <option {{ ($c['download'])?"selected":""}} value='1'>Y</option>
+                                        <option {{ (!($c['download'] ?? false))?"selected":""}} value='0'>N</option>
+                                        <option {{ (($c['download'] ?? false))?"selected":""}} value='1'>Y</option>
                                     </select>
                                 </td>
                                 <td>

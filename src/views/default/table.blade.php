@@ -70,7 +70,7 @@
                 $mainpath = trim(CRUDBooster::mainpath(), '/').($build_query ?? false);
                 echo "<th width='$width' $style>";
                 if (isset($sort_column[$field])) {
-                    switch ($sort_column[$field]['sorting']) {
+                    switch ($sort_column[$field]['sorting'] ?? false) {
                         case 'asc':
                             $url = CRUDBooster::urlFilterColumn($field, 'sorting', 'desc');
                             echo "<a href='$url' title='Click to sort descending'>$colname &nbsp; <i class='fa fa-sort-desc'></i></a>";
@@ -140,7 +140,13 @@
                     @endif
 
                     @foreach($hc as $j=>$h)
-                        <td {{ ($columns[$j]['style'] ?? false) or ''}}>{!! $h !!}</td>
+
+                        @if ( $j < count($hc) -1 )
+                            <td {{ ($columns[$j]['style'] ?? false) or ''}}>{!! strip_tags($h, ['input', 'img']) !!}</td>
+                        @else
+                            <td {{ ($columns[$j]['style'] ?? false) or ''}}>{!! $h !!}</td>
+                        @endif
+
                     @endforeach
                 </tr>
                 @endforeach
@@ -189,7 +195,7 @@ $total = $result->total();
 
 @if($columns)
     @push('bottom')
-        <script>
+        <script nonce="{{ $nonce }}">
             $(function () {
                 $('.btn-filter-data').click(function () {
                     $('#filter-data').modal('show');
@@ -426,7 +432,7 @@ $total = $result->total();
         </div>
 
 
-        <script>
+        <script nonce="{{ $nonce }}">
             $(function () {
                 $('.btn-filter-data').click(function () {
                     $('#filter-data').modal('show');

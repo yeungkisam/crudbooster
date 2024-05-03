@@ -24,7 +24,7 @@
 
         <div class='box-body'>
             @push('bottom')
-                <script>
+                <script nonce="{{ config('view.script_nonce', '') }}">
                     $(function () {
                         jQuery.fn.selectText = function () {
                             var doc = document;

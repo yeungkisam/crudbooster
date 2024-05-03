@@ -34,7 +34,7 @@
     $label = $a['label'];
     $title = ($a['title'] ?? false) ?: $a['label'];
     $icon = $a['icon'];
-    $color = $a['color'] ?: 'primary';
+    $color = ($a['color'] ?? false) ?: 'primary';
     $confirmation = $a['confirmation'] ?? false;
     $target = ($a['target'] ?? false) ?: '_self';
 

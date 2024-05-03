@@ -1,5 +1,5 @@
 @push('bottom')
-    <script>
+    <script nonce="{{ config('view.script_nonce', '') }}">
         $(function () {
             @foreach($forms as $form)
             @if($form['type'] == $type)

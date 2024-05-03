@@ -20,7 +20,7 @@
     </div>
 
     @push('bottom')
-        <script>
+        <script nonce="{{ config('view.script_nonce', '') }}">
             $(document).ready(function () {
                 var max_fields_{{$name}}    = "{{ @$form['max_fields'] }}";
                 var max_fields_{{$name}}    = parseInt(max_fields_{{$name}}) ? max_fields_{{$name}} : 5; //maximum input boxes allowed

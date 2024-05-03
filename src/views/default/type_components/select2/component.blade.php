@@ -30,7 +30,7 @@
             ?>
 
             @push('bottom')
-                <script>
+                <script nonce="{{ config('view.script_nonce', '') }}">
                     $(function () {
                         $('#{{$name}}').select2({
                             placeholder: {
